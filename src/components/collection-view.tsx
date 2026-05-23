@@ -10,11 +10,13 @@ import { getSeller } from "@/data/sellers";
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
 const sortLabels: Record<SortOption, string> = {
-  featured: "Featured",
-  "price-asc": "Price: Low to High",
-  "price-desc": "Price: High to Low",
-  newest: "Newest",
+  featured: "Polecane",
+  "price-asc": "Cena: rosnąco",
+  "price-desc": "Cena: malejąco",
+  newest: "Najnowsze",
 };
+
+const PROMOTED_CAP = 0.3;
 
 interface CollectionViewProps {
   products: Product[];
@@ -79,10 +81,29 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
           return bNew - aNew;
         });
         break;
+      case "featured":
+      default: {
+        const promoted = result
+          .filter((p) => p.promoted)
+          .sort((a, b) => (b.promotionBid ?? 0) - (a.promotionBid ?? 0));
+        const organic = result.filter((p) => !p.promoted);
+        const maxPromotedSlots = Math.max(1, Math.floor(result.length * PROMOTED_CAP));
+        const promotedTop = promoted.slice(0, maxPromotedSlots);
+        const promotedRest = promoted.slice(maxPromotedSlots);
+        result = [...promotedTop, ...organic, ...promotedRest];
+        break;
+      }
     }
 
     return result;
   }, [products, gender, sort, priceRange, shoeTypes, materials, sizes, sellerSlugs]);
+
+  const promotedShownCount = useMemo(() => {
+    if (sort !== "featured") return 0;
+    const maxSlots = Math.max(1, Math.floor(filtered.length * PROMOTED_CAP));
+    const promotedInList = filtered.filter((p) => p.promoted).length;
+    return Math.min(maxSlots, promotedInList);
+  }, [filtered, sort]);
 
   const activeFilterCount =
     (gender !== "all" ? 1 : 0) +
@@ -137,7 +158,7 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
             <line x1="1" y1="8" x2="10" y2="8" />
             <line x1="1" y1="12" x2="6" y2="12" />
           </svg>
-          Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+          Filtry {activeFilterCount > 0 && `(${activeFilterCount})`}
         </button>
       </div>
 
@@ -150,8 +171,8 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
           />
           <div className="fixed top-0 left-0 h-full w-full max-w-xs bg-white z-50 overflow-y-auto p-5 lg:hidden">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[14px] font-medium uppercase tracking-[0.5px]">Filters</h2>
-              <button onClick={() => setMobileFiltersOpen(false)} aria-label="Close filters">
+              <h2 className="text-[14px] font-medium uppercase tracking-[0.5px]">Filtry</h2>
+              <button onClick={() => setMobileFiltersOpen(false)} aria-label="Zamknij filtry">
                 <CloseIcon />
               </button>
             </div>
@@ -175,7 +196,7 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
             <div>
               <h2 className="text-2xl font-light text-charcoal">{collectionName}</h2>
               <p className="text-[12px] text-warm-gray mt-0.5">
-                {filtered.length} product{filtered.length !== 1 ? "s" : ""}
+                {filtered.length} {filtered.length === 1 ? "produkt" : "produktów"}
               </p>
             </div>
 
@@ -211,6 +232,20 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
             </div>
           </div>
 
+          {/* Sponsored transparency strip — DSA Art. 26 compliance */}
+          {promotedShownCount > 0 && (
+            <div className="mb-4 flex items-start gap-2 text-[11px] text-warm-gray bg-cream-light/60 border border-black/5 rounded px-3 py-2">
+              <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 opacity-60" fill="currentColor" aria-hidden="true">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.5a.875.875 0 110 1.75.875.875 0 010-1.75zM9 12H7V7h2v5z"/>
+              </svg>
+              <span>
+                {promotedShownCount} z {filtered.length} {filtered.length === 1 ? "wyniku jest sponsorowany" : "wyników jest sponsorowanych"}.
+                Sprzedawcy płacą za promocję tych ofert. Limit:{" "}
+                <span className="font-medium">{Math.round(PROMOTED_CAP * 100)}%</span>{" "}wyników na stronie.
+              </span>
+            </div>
+          )}
+
           {/* Seller header strip */}
           {sellerSlugs.length === 1 && (() => {
             const activeSeller = getSeller(sellerSlugs[0]);
@@ -221,15 +256,15 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
                 <div>
                   <h3 className="text-sm font-medium text-charcoal">{activeSeller.name}</h3>
                   <p className="text-[11px] text-warm-gray mt-0.5">
-                    {sellerProductCount} products · Joined {activeSeller.joinedYear}
-                    {activeSeller.rating > 0 && ` · ${activeSeller.rating} rating`}
+                    {sellerProductCount} {sellerProductCount === 1 ? "produkt" : "produktów"} · Dołączył w {activeSeller.joinedYear}
+                    {activeSeller.rating > 0 && ` · ocena ${activeSeller.rating}`}
                   </p>
                 </div>
                 <button
                   onClick={() => setSellerSlugs([])}
                   className="text-[11px] text-warm-gray underline hover:text-charcoal transition-colors"
                 >
-                  View all sellers
+                  Wszyscy sprzedawcy
                 </button>
               </div>
             );
@@ -238,9 +273,9 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
           {/* Product grid */}
           {filtered.length === 0 ? (
             <div className="py-20 text-center">
-              <p className="text-warm-gray text-sm mb-4">No products match your filters.</p>
+              <p className="text-warm-gray text-sm mb-4">Brak produktów pasujących do filtrów.</p>
               <button onClick={clearAll} className="btn-cta-outline text-[11px]">
-                CLEAR ALL FILTERS
+                WYCZYŚĆ FILTRY
               </button>
             </div>
           ) : (

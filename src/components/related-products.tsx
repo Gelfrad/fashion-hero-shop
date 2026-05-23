@@ -26,7 +26,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
   return (
     <section className="py-12">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-medium text-charcoal">You May Also Like</h2>
+        <h2 className="text-lg font-medium text-charcoal">Może Cię też zainteresować</h2>
         <div className="flex gap-2">
           <button
             onClick={() => scroll("left")}

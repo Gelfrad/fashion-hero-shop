@@ -93,7 +93,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               }}
               className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 text-[10px] font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden md:block hover:bg-white z-10"
             >
-              QUICK VIEW
+              PODGLĄD
             </button>
           </div>
         </Link>
@@ -113,7 +113,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
           <p className="text-[12px] text-warm-gray mb-0.5">{firstColor?.name}</p>
           {seller && (
             <p className="text-[11px] text-warm-gray/70 mb-1">
-              Sold by{" "}
+              Sprzedawca:{" "}
               <span className="text-charcoal/60 hover:text-charcoal transition-colors">
                 {seller.name}
               </span>
@@ -141,13 +141,26 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
       {/* Price */}
       <div className="flex items-center gap-2">
-        <span className="text-[14px] font-medium">{product.price} zl</span>
+        <span className="text-[14px] font-medium">{product.price} zł</span>
         {product.originalPrice && (
           <span className="text-xs text-warm-gray line-through">
-            {product.originalPrice} zl
+            {product.originalPrice} zł
           </span>
         )}
       </div>
+
+      {product.promoted && (
+        <p
+          className="text-[10px] text-warm-gray/80 pt-0.5"
+          title={
+            seller
+              ? `Płatne miejsce. Sprzedawca ${seller.name} zapłacił za promocję tej oferty.`
+              : "Płatne miejsce. Sprzedawca zapłacił za promocję tej oferty."
+          }
+        >
+          Sponsorowane
+        </p>
+      )}
     </div>
   );
 }

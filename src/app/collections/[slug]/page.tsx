@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import { getCollection } from "@/data/collections";
 import { collections } from "@/data/collections";
 import { getProductsByCollection } from "@/data/products";
+import { getActiveBannerForCategory } from "@/data/campaigns";
 import { CollectionHero } from "@/components/collection-hero";
 import { CollectionView } from "@/components/collection-view";
+import { SponsoredBanner } from "@/components/sponsored-banner";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -39,10 +41,15 @@ export default async function CollectionPage({ params, searchParams }: PageProps
   }
 
   const products = getProductsByCollection(slug);
+  const banner = getActiveBannerForCategory(slug);
 
   return (
     <>
-      <CollectionHero collection={collection} />
+      {banner ? (
+        <SponsoredBanner campaign={banner} />
+      ) : (
+        <CollectionHero collection={collection} />
+      )}
       <CollectionView
         products={products}
         collectionName={collection.name}

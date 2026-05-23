@@ -35,6 +35,37 @@ export interface Product {
   reviewCount: number;
   tags: string[];
   sellerId: string;
+  promoted?: boolean;
+  promotionBid?: number;
+  promotionCampaignId?: string;
+}
+
+export type CampaignFormat = "top_search" | "category_banner" | "similar_products";
+export type CampaignStatus = "active" | "paused";
+
+export interface Campaign {
+  id: string;
+  sellerId: string;
+  name: string;
+  format: CampaignFormat;
+  status: CampaignStatus;
+  productIds: string[];
+  keywords: string[];
+  dailyBudget: number;
+  totalBudget: number;
+  spentToday: number;
+  maxCpc: number;
+  durationDays: number;
+  clicks: number;
+  impressions: number;
+  attributedSales: number;
+  roas: number;
+  ctr: number;
+  cpc: number;
+  bannerImage?: string;
+  bannerHeadline?: string;
+  bannerCta?: string;
+  bannerCategory?: string;
 }
 
 export interface Collection {

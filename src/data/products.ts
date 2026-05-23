@@ -990,6 +990,9 @@ export const products: Product[] = [
     reviewCount: 74,
     tags: ["cozy", "layering", "versatile", "soft"],
     sellerId: "s2",
+    promoted: true,
+    promotionBid: 1.18,
+    promotionCampaignId: "c1",
     colors: [
       { name: "Oatmeal", hex: "#c4b59a", image: "/images/products/product-22.jpg" },
       { name: "Charcoal", hex: "#333333", image: "/images/products/product-23.jpg" },
@@ -1113,6 +1116,9 @@ export const products: Product[] = [
     reviewCount: 37,
     tags: ["smart-casual", "oversized", "layering", "modern"],
     sellerId: "s2",
+    promoted: true,
+    promotionBid: 1.18,
+    promotionCampaignId: "c1",
     colors: [
       { name: "Charcoal", hex: "#333333", image: "/images/products/product-22.jpg" },
       { name: "Cream", hex: "#f0ede6", image: "/images/products/product-23.jpg" },
@@ -1208,6 +1214,9 @@ export const products: Product[] = [
     reviewCount: 67,
     tags: ["elegant", "knit", "comfortable", "office"],
     sellerId: "s2",
+    promoted: true,
+    promotionBid: 0.72,
+    promotionCampaignId: "c3",
     colors: [
       { name: "Black", hex: "#1a1a1a", image: "/images/products/product-10.jpg" },
       { name: "Taupe", hex: "#8b7d6b", image: "/images/products/product-15.jpg" },
