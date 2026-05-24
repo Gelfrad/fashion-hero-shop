@@ -40,8 +40,8 @@ export const campaigns: Campaign[] = [
     roas: 3.1,
     ctr: 0.68,
     cpc: 0.65,
-    bannerImage: "/images/hero/hero-2.jpg",
-    bannerHeadline: "Buty na chłodne dni",
+    // bannerImage intentionally omitted — sponsored-banner derives it from first product (Wrap Dress)
+    bannerHeadline: "Bella Donna · Kolekcja AW",
     bannerCta: "Zobacz kolekcję",
     bannerCategory: "womens",
   },

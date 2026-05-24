@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   formatLabels,
   performanceSeries,
-  topKeywords,
   optimizations,
   fmtNumber,
 } from "@/data/campaigns";
@@ -305,9 +304,20 @@ export default function CampaignDetailPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* Top keywords */}
+      {/* Top keywords — only for CPC formats (banners don't use keywords) */}
+      {campaign.format !== "category_banner" && (
       <div className="bg-white border border-black/10 rounded-xl p-5 md:p-6">
-        <h2 className="text-base font-medium mb-4 text-charcoal">Top słowa kluczowe</h2>
+        <div className="flex items-end justify-between mb-4 gap-3">
+          <h2 className="text-base font-medium text-charcoal">Twoje słowa kluczowe</h2>
+          <p className="text-[11px] text-warm-gray">
+            {campaign.keywords.length} {campaign.keywords.length === 1 ? "fraza" : campaign.keywords.length < 5 ? "frazy" : "fraz"}
+          </p>
+        </div>
+        {campaign.keywords.length === 0 ? (
+          <p className="text-sm text-warm-gray py-6 text-center">
+            Ta kampania nie ma jeszcze słów kluczowych. Edytuj kampanię, aby je dodać.
+          </p>
+        ) : (
         <div className="overflow-x-auto -mx-2">
           <table className="w-full min-w-[520px] text-sm">
             <thead>
@@ -324,19 +334,30 @@ export default function CampaignDetailPage({ params }: PageProps) {
               </tr>
             </thead>
             <tbody>
-              {topKeywords.map((k) => (
-                <tr key={k.keyword} className="border-b border-black/10 last:border-0">
-                  <td className="px-2 py-3 font-medium text-charcoal">{k.keyword}</td>
-                  <td className="px-2 py-3 text-right text-warm-gray">{fmtNumber(k.impressions)}</td>
-                  <td className="px-2 py-3 text-right">{k.ctr}%</td>
-                  <td className="px-2 py-3 text-right">{k.cpc.toFixed(2)} PLN</td>
-                  <td className="px-2 py-3 text-right">{k.conversion}%</td>
+              {campaign.keywords.map((keyword, idx) => {
+                // Mock per-keyword stats — deterministic so it doesn't reshuffle each render.
+                // In production these would come from real ad-server attribution.
+                const seed = keyword.length + idx;
+                const impressions = Math.round(500 + (seed * 137) % 4500);
+                const ctr = Math.round((1.2 + (seed * 0.31) % 2.2) * 10) / 10;
+                const cpcVal = Math.round((campaign.maxCpc * 0.6 + (seed * 0.07) % 0.5) * 100) / 100;
+                const conversion = Math.round((1.5 + (seed * 0.27) % 2.8) * 10) / 10;
+                return (
+                <tr key={keyword} className="border-b border-black/10 last:border-0">
+                  <td className="px-2 py-3 font-medium text-charcoal">{keyword}</td>
+                  <td className="px-2 py-3 text-right text-warm-gray">{fmtNumber(impressions)}</td>
+                  <td className="px-2 py-3 text-right">{ctr}%</td>
+                  <td className="px-2 py-3 text-right">{cpcVal.toFixed(2)} PLN</td>
+                  <td className="px-2 py-3 text-right">{conversion}%</td>
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
         </div>
+        )}
       </div>
+      )}
 
       {/* Toast */}
       {toast && (

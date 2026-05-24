@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { FilterSidebar, type GenderFilter, type PriceRange } from "@/components/filter-sidebar";
 import { ProductCard } from "@/components/product-card";
 import { ChevronDownIcon, CloseIcon } from "@/components/icons";
-import type { Product, ShoeType, ShoeMaterial } from "@/types";
+import type { Product, ShoeType, ShoeMaterial, ProductCategory } from "@/types";
 import { getSeller } from "@/data/sellers";
 import { usePromotedProductIds } from "@/store/marketplace-store";
 
@@ -23,14 +23,45 @@ interface CollectionViewProps {
   products: Product[];
   collectionName: string;
   initialSellerSlug?: string;
+  initialType?: string;
+  initialProductCategory?: string;
+  initialGender?: string;
 }
 
-export function CollectionView({ products, collectionName, initialSellerSlug }: CollectionViewProps) {
+function parseGender(v: string | undefined): GenderFilter {
+  if (v === "men" || v === "women" || v === "all") return v as GenderFilter;
+  return "all";
+}
+
+function isValidShoeType(v: string): v is ShoeType {
+  return [
+    "runner", "walker", "slip-on", "trainer", "flat", "hiker", "slide", "loafer",
+    "sock", "tee", "hoodie", "pant", "jacket", "cardigan", "bag", "beanie", "cap", "insole",
+  ].includes(v);
+}
+
+function isValidProductCategory(v: string): v is ProductCategory {
+  return ["shoes", "socks", "apparel", "accessories"].includes(v);
+}
+
+export function CollectionView({
+  products,
+  collectionName,
+  initialSellerSlug,
+  initialType,
+  initialProductCategory,
+  initialGender,
+}: CollectionViewProps) {
   const { ids: promotedIds, bidByProduct } = usePromotedProductIds();
-  const [gender, setGender] = useState<GenderFilter>("all");
+  const [gender, setGender] = useState<GenderFilter>(parseGender(initialGender));
   const [sort, setSort] = useState<SortOption>("featured");
   const [priceRange, setPriceRange] = useState<PriceRange>("all");
-  const [shoeTypes, setShoeTypes] = useState<ShoeType[]>([]);
+  const [shoeTypes, setShoeTypes] = useState<ShoeType[]>(
+    initialType && isValidShoeType(initialType) ? [initialType] : []
+  );
+  const [productCategory, setProductCategory] = useState<ProductCategory | null>(
+    initialProductCategory && isValidProductCategory(initialProductCategory) ? initialProductCategory : null
+  );
   const [materials, setMaterials] = useState<ShoeMaterial[]>([]);
   const [sizes, setSizes] = useState<number[]>([]);
   const [sellerSlugs, setSellerSlugs] = useState<string[]>(
@@ -44,6 +75,9 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
 
     if (gender !== "all") {
       result = result.filter((p) => p.category === gender || p.category === "unisex");
+    }
+    if (productCategory) {
+      result = result.filter((p) => p.productCategory === productCategory);
     }
     if (priceRange === "under-100") {
       result = result.filter((p) => p.price < 199);
@@ -98,7 +132,7 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
     }
 
     return result;
-  }, [products, gender, sort, priceRange, shoeTypes, materials, sizes, sellerSlugs, promotedIds, bidByProduct]);
+  }, [products, gender, sort, priceRange, shoeTypes, productCategory, materials, sizes, sellerSlugs, promotedIds, bidByProduct]);
 
   const promotedShownCount = useMemo(() => {
     if (sort !== "featured") return 0;

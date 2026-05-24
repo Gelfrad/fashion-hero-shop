@@ -8,7 +8,7 @@ import { CollectionView } from "@/components/collection-view";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ seller?: string }>;
+  searchParams: Promise<{ seller?: string; type?: string; cat?: string; gender?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CollectionPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { seller } = await searchParams;
+  const { seller, type, cat, gender } = await searchParams;
   const collection = getCollection(slug);
 
   if (!collection) {
@@ -47,6 +47,9 @@ export default async function CollectionPage({ params, searchParams }: PageProps
         products={products}
         collectionName={collection.name}
         initialSellerSlug={seller}
+        initialType={type}
+        initialProductCategory={cat}
+        initialGender={gender}
       />
     </>
   );

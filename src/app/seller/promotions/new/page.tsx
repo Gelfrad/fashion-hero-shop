@@ -50,7 +50,8 @@ export default function NewCampaignPage() {
       maxCpc: format === "category_banner" ? 0 : cpc,
       durationDays: duration,
       // banner-specific fields filled when format === "category_banner"
-      bannerImage: format === "category_banner" ? "/images/hero/hero-2.jpg" : undefined,
+      // bannerImage is intentionally NOT set — sponsored-banner derives it from
+      // the first promoted product so the hero matches the actual offer.
       bannerHeadline: format === "category_banner" ? finalName : undefined,
       bannerCta: format === "category_banner" ? "Zobacz kolekcję" : undefined,
       bannerCategory: format === "category_banner" ? "womens" : undefined,

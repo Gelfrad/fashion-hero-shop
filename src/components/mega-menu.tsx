@@ -18,7 +18,7 @@ const menMenu: MenuColumn[] = [
       { label: "Buty do chodzenia", href: "/collections/mens?type=walker" },
       { label: "Trampki", href: "/collections/mens?type=trainer" },
       { label: "Wsuwane", href: "/collections/mens?type=slip-on" },
-      { label: "Wszystkie buty męskie", href: "/collections/mens" },
+      { label: "Wszystkie buty męskie", href: "/collections/mens?cat=shoes" },
     ],
   },
   {
@@ -61,7 +61,7 @@ const womenMenu: MenuColumn[] = [
       { label: "Trampki", href: "/collections/womens?type=trainer" },
       { label: "Baleriny", href: "/collections/womens?type=flat" },
       { label: "Wsuwane", href: "/collections/womens?type=slip-on" },
-      { label: "Wszystkie buty damskie", href: "/collections/womens" },
+      { label: "Wszystkie buty damskie", href: "/collections/womens?cat=shoes" },
     ],
   },
   {

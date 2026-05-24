@@ -2,14 +2,31 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Campaign } from "@/types";
 import { getSellerById } from "@/data/sellers";
+import { products } from "@/data/products";
 
 interface SponsoredBannerProps {
   campaign: Campaign;
 }
 
+/**
+ * Derive a banner image from the campaign's first promoted product. This way the
+ * hero visual always matches what's being advertised — a jogger pants campaign
+ * shows jogger pants, not a sneaker. Falls back to `campaign.bannerImage` only
+ * if no product has a usable image.
+ */
+function pickBannerImage(campaign: Campaign): string {
+  for (const pid of campaign.productIds) {
+    const product = products.find((p) => p.id === pid);
+    const img = product?.colors[0]?.image;
+    if (img && img.startsWith("/images/")) return img;
+  }
+  if (campaign.bannerImage) return campaign.bannerImage;
+  return "/images/hero/hero-2.jpg";
+}
+
 export function SponsoredBanner({ campaign }: SponsoredBannerProps) {
   const seller = getSellerById(campaign.sellerId);
-  const image = campaign.bannerImage ?? "/images/products/product-22.jpg";
+  const image = pickBannerImage(campaign);
   const headline = campaign.bannerHeadline ?? "Odkryj kolekcję";
   const cta = campaign.bannerCta ?? "Zobacz kolekcję";
   const sellerLabel = seller ? `${seller.name} · sponsorowane` : "Sponsorowane";
