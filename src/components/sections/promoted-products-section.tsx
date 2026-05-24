@@ -26,18 +26,13 @@ export function PromotedProductsSection() {
   return (
     <section className="bg-cream-light/40 py-12 md:py-16 border-y border-black/5">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="flex items-end justify-between mb-6 md:mb-8 gap-4 flex-wrap">
-          <div>
-            <p className="text-[11px] uppercase tracking-[1px] text-warm-gray mb-2">
-              Polecane przez sprzedawców · Sponsorowane
-            </p>
-            <h2 className="text-2xl md:text-3xl font-light tracking-tight text-charcoal">
-              Wyróżnione oferty
-            </h2>
-          </div>
-          <p className="text-xs text-warm-gray max-w-sm" title="Sprzedawcy płacą za promocję tych ofert. Pozostała część strony jest organiczna.">
-            Te produkty zostały wyróżnione przez sprzedawców w ramach kampanii reklamowych.
+        <div className="mb-6 md:mb-8">
+          <p className="text-[11px] uppercase tracking-[1px] text-warm-gray mb-2">
+            Polecane przez sprzedawców · Sponsorowane
           </p>
+          <h2 className="text-2xl md:text-3xl font-light tracking-tight text-charcoal">
+            Wyróżnione oferty
+          </h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
