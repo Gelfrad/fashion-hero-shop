@@ -147,26 +147,6 @@ export default function SellerPromotionsPage() {
         </>
       )}
 
-      {/* Fairness panel */}
-      <div className="mt-12 p-5 md:p-6 rounded-xl border border-black/10 bg-cream-light/40">
-        <p className="text-[11px] uppercase tracking-[1px] text-warm-gray mb-2">
-          Uczciwość marketplace
-        </p>
-        <h3 className="text-base font-medium mb-2 text-charcoal">Przejrzysty system reklam z limitem</h3>
-        <p className="text-sm text-warm-gray max-w-2xl mb-4 leading-relaxed">
-          Aby chronić jakość wyszukiwania dla 2,4 mln kupujących, ograniczamy promowane miejsca do{" "}
-          <strong className="text-charcoal">30% widocznej oferty</strong>. Pozostałe 70% jest czysto organiczne — ranking po
-          trafności, ocenach i nowości.
-        </p>
-        <div className="flex h-2 rounded-full overflow-hidden bg-black/5">
-          <div className="h-full bg-amber-400" style={{ width: "30%" }} />
-          <div className="h-full bg-charcoal/80" style={{ width: "70%" }} />
-        </div>
-        <div className="flex justify-between text-xs text-warm-gray mt-2">
-          <span>30% sponsorowane</span>
-          <span>70% organiczne</span>
-        </div>
-      </div>
     </div>
   );
 }
