@@ -5,17 +5,17 @@ const spotlights = [
   {
     gradient: "linear-gradient(160deg, #8a7d6b 0%, #c4b59a 40%, #e8dfd0 100%)",
     image: "/images/products/product-9.jpg",
-    label: "NATURALLY EASY",
+    label: "NATURALNIE LEKKIE",
     name: "Cloud Runner",
-    tagline: "Our lightest shoe ever. Knit from recycled materials for all-day ease.",
+    tagline: "Najlżejsze buty w naszej ofercie. Z dzianiny z materiałów z recyklingu — wygodne przez cały dzień.",
     href: "/products/cloud-runner",
   },
   {
     gradient: "linear-gradient(160deg, #5c6b4f 0%, #8a9a7a 40%, #c5cfbb 100%)",
     image: "/images/products/product-15.jpg",
-    label: "LIGHT ON YOUR FEET",
+    label: "LEKKIE JAK PIÓRKO",
     name: "Breeze Slip-On",
-    tagline: "Slip in and go. Eucalyptus fiber keeps things cool, naturally.",
+    tagline: "Wsuwasz i ruszasz. Włókno eukaliptusowe utrzymuje chłód — naturalnie.",
     href: "/products/breeze-slip-on",
   },
 ];
@@ -24,7 +24,7 @@ export function FeatureStory() {
   return (
     <section className="px-4 md:px-8 lg:px-12 py-10">
       <h2 className="text-[40px] font-normal text-charcoal text-center mb-10 leading-tight">
-        Your Easy, Breezy MVP
+        Lekkie, oddychające. Twoje.
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -59,7 +59,7 @@ export function FeatureStory() {
                 href={item.href}
                 className="inline-flex items-center justify-center px-5 py-2 text-[11px] font-medium uppercase tracking-[0.6px] text-white border border-white rounded-full hover:bg-white hover:text-charcoal transition-all duration-200"
               >
-                EXPLORE MORE
+                ZOBACZ WIĘCEJ
               </Link>
             </div>
           </div>

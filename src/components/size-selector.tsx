@@ -25,7 +25,7 @@ export function SizeSelector({ sizes, selectedSize, onSelect }: SizeSelectorProp
               : "border-transparent text-warm-gray hover:text-charcoal"
           )}
         >
-          {"MEN'S SIZES"}
+          ROZMIARY MĘSKIE
         </button>
         <button
           onClick={() => setSizeType("women")}
@@ -36,7 +36,7 @@ export function SizeSelector({ sizes, selectedSize, onSelect }: SizeSelectorProp
               : "border-transparent text-warm-gray hover:text-charcoal"
           )}
         >
-          {"WOMEN'S SIZES"}
+          ROZMIARY DAMSKIE
         </button>
       </div>
 

@@ -83,14 +83,14 @@ export function HeroCarousel() {
             className={`w-2 h-2 rounded-full transition-colors ${
               i === current ? "bg-white" : "bg-white/40"
             }`}
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={`Przejdź do slajdu ${i + 1}`}
           />
         ))}
 
         <button
           onClick={() => setPlaying((p) => !p)}
           className="ml-2 p-1 text-white/60 hover:text-white transition-colors"
-          aria-label={playing ? "Pause carousel" : "Play carousel"}
+          aria-label={playing ? "Wstrzymaj karuzelę" : "Odtwórz karuzelę"}
         >
           {playing ? <PauseIcon /> : <PlayIcon />}
         </button>

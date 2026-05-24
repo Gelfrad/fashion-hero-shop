@@ -3520,30 +3520,30 @@ export function getProductsBySeller(sellerSlug: string): Product[] {
 export const heroSlides: HeroSlide[] = [
   {
     id: "1",
-    subtitle: "DISCOVER 4,000+ SELLERS",
-    title: "Your Style. Their Craft.",
+    subtitle: "PONAD 4 000 SPRZEDAWCÓW",
+    title: "Twój styl. Ich rzemiosło.",
     image: "/images/hero/hero-1.jpg",
     ctaLinks: [
-      { label: "SHOP MEN", href: "/collections/mens" },
-      { label: "SHOP WOMEN", href: "/collections/womens" },
+      { label: "MĘSKA", href: "/collections/mens" },
+      { label: "DAMSKA", href: "/collections/womens" },
     ],
   },
   {
     id: "2",
-    subtitle: "NEW ON FASHIONHERO",
-    title: "Fresh brands. Unique finds.",
+    subtitle: "NOWE NA FASHIONHERO",
+    title: "Świeże marki. Wyjątkowe znaleziska.",
     image: "/images/hero/hero-2.jpg",
     ctaLinks: [
-      { label: "SHOP NEW ARRIVALS", href: "/collections/new-arrivals" },
+      { label: "ZOBACZ NOWOŚCI", href: "/collections/new-arrivals" },
     ],
   },
   {
     id: "3",
-    subtitle: "FASHION MARKETPLACE",
-    title: "From indie designers to top brands. All in one place.",
+    subtitle: "MODOWY MARKETPLACE",
+    title: "Od niezależnych projektantów po wielkie marki. W jednym miejscu.",
     image: "/images/hero/hero-3.jpg",
     ctaLinks: [
-      { label: "EXPLORE ALL", href: "/collections/all" },
+      { label: "ODKRYJ WSZYSTKO", href: "/collections/all" },
     ],
   },
 ];

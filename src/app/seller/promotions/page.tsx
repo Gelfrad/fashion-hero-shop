@@ -1,27 +1,30 @@
+"use client";
+
 import Link from "next/link";
-import { getCampaignsBySeller, formatLabels, summary, fmtPLN, fmtNumber } from "@/data/campaigns";
+import { formatLabels, summary, fmtPLN, fmtNumber } from "@/data/campaigns";
 import { getSellerById } from "@/data/sellers";
-import { getWalletForSeller } from "@/data/wallet";
 import { calculateBalanceRunway, fmtPLNAmount } from "@/lib/billing";
 import type { Campaign } from "@/types";
 import { cn } from "@/lib/utils";
-
-const CURRENT_SELLER_ID = "s2";
-
-export const metadata = {
-  title: "Promocje — Panel sprzedawcy · FashionHero",
-  description: "Zarządzaj promowanymi ofertami.",
-};
+import {
+  useCampaignsForCurrentSeller,
+  useWalletForCurrentSeller,
+  useMarketplace,
+  MARKETPLACE_CURRENT_SELLER_ID,
+} from "@/store/marketplace-store";
 
 export default function SellerPromotionsPage() {
-  const seller = getSellerById(CURRENT_SELLER_ID);
-  const campaigns = getCampaignsBySeller(CURRENT_SELLER_ID);
-  const wallet = getWalletForSeller(CURRENT_SELLER_ID);
+  const seller = getSellerById(MARKETPLACE_CURRENT_SELLER_ID);
+  const campaigns = useCampaignsForCurrentSeller();
+  const wallet = useWalletForCurrentSeller();
+  const { hydrated } = useMarketplace();
   const activeDailyBudget = campaigns
     .filter((c) => c.status === "active")
     .reduce((sum, c) => sum + c.dailyBudget, 0);
   const runwayDays = wallet ? calculateBalanceRunway(wallet.balance, activeDailyBudget) : Infinity;
   const isLowBalance = wallet && activeDailyBudget > 0 && runwayDays < 3;
+  const hasCampaigns = hydrated && campaigns.length > 0;
+  const showEmpty = hydrated && campaigns.length === 0;
 
   return (
     <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 md:py-12">
@@ -78,10 +81,10 @@ export default function SellerPromotionsPage() {
           <Link
             href="/seller/promotions/wallet"
             className={cn(
-              "inline-flex items-center justify-center gap-2 text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded transition-colors shrink-0",
+              "inline-flex items-center justify-center gap-2 text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded shrink-0 transition-all duration-200",
               isLowBalance
                 ? "bg-amber-600 text-white hover:bg-amber-700"
-                : "border border-black/15 hover:border-charcoal hover:bg-cream-light",
+                : "border border-charcoal text-charcoal hover:bg-charcoal hover:text-white",
             )}
           >
             <span aria-hidden>＋</span> Doładuj saldo
@@ -89,49 +92,60 @@ export default function SellerPromotionsPage() {
         </div>
       )}
 
-      {/* Onboarding tip */}
-      <div className="mb-8 p-4 rounded-lg border border-amber-200 bg-amber-50/60 flex items-start gap-3">
-        <span className="text-amber-600 text-lg leading-none">✦</span>
-        <div className="flex-1">
-          <p className="text-sm font-medium text-charcoal">Pierwszy raz promujesz oferty?</p>
-          <p className="text-xs text-warm-gray mt-1 leading-relaxed">
-            Sprzedawcy korzystający z promocji widzą średnio <strong>2,8× więcej wyświetleń produktów</strong> w pierwszym miesiącu.
-            Zacznij od małego budżetu dziennego (50 PLN wystarczy) i obserwuj dane.
-          </p>
+      {/* Onboarding tip — only when there are campaigns; new sellers see proper empty state */}
+      {hasCampaigns && (
+        <div className="mb-8 p-4 rounded-lg border border-amber-200 bg-amber-50/60 flex items-start gap-3">
+          <span className="text-amber-600 text-lg leading-none">✦</span>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-charcoal">Pierwszy raz promujesz oferty?</p>
+            <p className="text-xs text-warm-gray mt-1 leading-relaxed">
+              Sprzedawcy korzystający z promocji widzą średnio <strong>2,8× więcej wyświetleń produktów</strong> w pierwszym miesiącu.
+              Zacznij od małego budżetu dziennego (50 PLN wystarczy) i obserwuj dane.
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Summary metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-10">
-        <Metric label="Wydatki (ten miesiąc)" value={fmtPLN(summary.monthlySpend)} delta={`+${summary.monthlySpendDelta}%`} />
-        <Metric label="Kliknięcia" value={fmtNumber(summary.monthlyClicks)} delta={`+${summary.monthlyClicksDelta}%`} />
-        <Metric label="Przychód z reklam" value={fmtPLN(summary.adRevenue)} delta={`+${summary.adRevenueDelta}%`} />
-        <Metric
-          label="Zwrot z inwestycji"
-          value={`${summary.roas.toFixed(2)}×`}
-          delta={`+${summary.roasDelta.toFixed(1)}×`}
-          tooltip={`Stosunek sprzedaży do kosztu reklam. ${summary.roas.toFixed(2)}× oznacza, że z każdej 1 PLN reklamy uzyskałeś ${summary.roas.toFixed(2)} PLN sprzedaży. (W branży: ROAS)`}
-        />
-        <Metric
-          label="Średni CPC"
-          value={`${summary.avgCpc.toFixed(2)} PLN`}
-          delta={`${summary.avgCpcDelta.toFixed(2)}`}
-          deltaPositive={false}
-          tooltip="CPC = średnia kwota, którą płacisz za jedno kliknięcie w Twoją reklamę."
-        />
-      </div>
+      {hasCampaigns && (
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-10">
+          <Metric label="Wydatki (ten miesiąc)" value={fmtPLN(summary.monthlySpend)} delta={`+${summary.monthlySpendDelta}%`} />
+          <Metric label="Kliknięcia" value={fmtNumber(summary.monthlyClicks)} delta={`+${summary.monthlyClicksDelta}%`} />
+          <Metric label="Przychód z reklam" value={fmtPLN(summary.adRevenue)} delta={`+${summary.adRevenueDelta}%`} />
+          <Metric
+            label="Zwrot z inwestycji"
+            value={`${summary.roas.toFixed(2)}×`}
+            delta={`+${summary.roasDelta.toFixed(1)}×`}
+            tooltip={`Stosunek sprzedaży do kosztu reklam. ${summary.roas.toFixed(2)}× oznacza, że z każdej 1 PLN reklamy uzyskałeś ${summary.roas.toFixed(2)} PLN sprzedaży. (W branży: ROAS)`}
+          />
+          <Metric
+            label="Średni CPC"
+            value={`${summary.avgCpc.toFixed(2)} PLN`}
+            delta={`${summary.avgCpcDelta.toFixed(2)}`}
+            deltaPositive={false}
+            tooltip="CPC = średnia kwota, którą płacisz za jedno kliknięcie w Twoją reklamę."
+          />
+        </div>
+      )}
+
+      {/* Empty state — new seller has no campaigns */}
+      {showEmpty && <EmptyState />}
 
       {/* Campaigns list */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-medium text-charcoal">Twoje kampanie</h2>
-        <span className="text-xs text-warm-gray">{campaigns.length} {campaigns.length === 1 ? "kampania" : "kampanii"}</span>
-      </div>
+      {hasCampaigns && (
+        <>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-medium text-charcoal">Twoje kampanie</h2>
+            <span className="text-xs text-warm-gray">{campaigns.length} {campaigns.length === 1 ? "kampania" : "kampanii"}</span>
+          </div>
 
-      <div className="grid gap-3 md:gap-4">
-        {campaigns.map((c) => (
-          <CampaignCard key={c.id} campaign={c} />
-        ))}
-      </div>
+          <div className="grid gap-3 md:gap-4">
+            {campaigns.map((c) => (
+              <CampaignCard key={c.id} campaign={c} />
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Fairness panel */}
       <div className="mt-12 p-5 md:p-6 rounded-xl border border-black/10 bg-cream-light/40">
@@ -153,6 +167,60 @@ export default function SellerPromotionsPage() {
           <span>70% organiczne</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="rounded-2xl border border-dashed border-black/15 bg-white p-8 md:p-14 text-center">
+      <div className="mx-auto w-14 h-14 rounded-2xl bg-cream-light flex items-center justify-center mb-4 text-2xl">
+        ✦
+      </div>
+      <h2 className="text-xl md:text-2xl font-medium text-charcoal mb-2">Brak aktywnych kampanii</h2>
+      <p className="text-sm text-warm-gray max-w-md mx-auto leading-relaxed mb-6">
+        Promowane oferty pomagają Twoim produktom wybić się ponad konkurencję.
+        Sprzedawcy uruchamiający pierwszą kampanię notują średnio <strong className="text-charcoal">2,8× więcej wyświetleń</strong>{" "}
+        w pierwszym miesiącu.
+      </p>
+      <Link
+        href="/seller/promotions/new"
+        className="inline-flex items-center justify-center gap-2 bg-charcoal text-white text-[12px] font-medium uppercase tracking-[0.5px] px-6 py-3 rounded hover:bg-charcoal-light transition-colors"
+      >
+        <span aria-hidden>＋</span> Stwórz pierwszą kampanię
+      </Link>
+
+      <div className="grid sm:grid-cols-3 gap-4 mt-10 max-w-3xl mx-auto text-left">
+        <EmptyBenefit
+          icon="🎯"
+          title="Top wyszukiwań"
+          text="Twój produkt pojawia się wyżej w wynikach. Płacisz tylko za kliknięcia."
+        />
+        <EmptyBenefit
+          icon="🖼"
+          title="Baner kategorii"
+          text="Pełnoekranowy hero na górze strony kategorii przez 7 dni."
+        />
+        <EmptyBenefit
+          icon="▦"
+          title="Podobne produkty"
+          text="Twoja oferta podpina się pod konkurencyjne strony produktów."
+        />
+      </div>
+
+      <p className="text-[11px] text-warm-gray mt-8 max-w-md mx-auto">
+        Możesz wstrzymać kampanię w dowolnym momencie. Zacznij od małego budżetu — wystarczy 50 PLN.
+      </p>
+    </div>
+  );
+}
+
+function EmptyBenefit({ icon, title, text }: { icon: string; title: string; text: string }) {
+  return (
+    <div className="p-4 rounded-lg border border-black/10 bg-cream-light/30">
+      <div className="text-xl mb-2">{icon}</div>
+      <p className="text-sm font-medium text-charcoal mb-1">{title}</p>
+      <p className="text-xs text-warm-gray leading-relaxed">{text}</p>
     </div>
   );
 }
@@ -189,7 +257,9 @@ function Metric({
 }
 
 function CampaignCard({ campaign }: { campaign: Campaign }) {
-  const budgetPct = Math.min(100, Math.round((campaign.spentToday / campaign.dailyBudget) * 100));
+  const budgetPct = campaign.dailyBudget > 0
+    ? Math.min(100, Math.round((campaign.spentToday / campaign.dailyBudget) * 100))
+    : 0;
   const isPaused = campaign.status === "paused";
 
   return (

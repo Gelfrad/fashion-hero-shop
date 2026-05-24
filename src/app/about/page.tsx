@@ -3,34 +3,34 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About - FashionHero",
-  description: "Poland's fashion marketplace connecting sellers and buyers.",
+  title: "O nas - FashionHero",
+  description: "Polski marketplace modowy łączący sprzedawców i kupujących.",
 };
 
 const values = [
   {
-    title: "Empowering Sellers",
+    title: "Wspieramy sprzedawców",
     description:
-      "We give independent sellers and established brands the tools to reach millions of fashion-conscious shoppers. Every seller matters - from one-person studios to global brands.",
+      "Dajemy niezależnym sprzedawcom i znanym markom narzędzia, dzięki którym docierają do milionów osób zakochanych w modzie. Każdy sprzedawca jest dla nas ważny - od jednoosobowych pracowni po globalne marki.",
   },
   {
-    title: "Curated Discovery",
+    title: "Wyselekcjonowane odkrycia",
     description:
-      "Our marketplace brings together diverse styles and price points. We help buyers discover sellers they'd never find on their own - and help sellers find their audience.",
+      "Nasz marketplace łączy różnorodne style i przedziały cenowe. Pomagamy kupującym odkryć sprzedawców, na których nigdy by nie trafili samodzielnie - a sprzedawcom dotrzeć do ich odbiorców.",
   },
   {
-    title: "Fair For Everyone",
+    title: "Sprawiedliwie dla wszystkich",
     description:
-      "Transparent fees, no hidden costs, equal visibility. We believe a marketplace works best when every seller has a fair shot at reaching customers.",
+      "Przejrzyste opłaty, brak ukrytych kosztów, równe szanse w widoczności. Wierzymy, że marketplace działa najlepiej, gdy każdy sprzedawca ma uczciwą szansę dotarcia do klientów.",
   },
 ];
 
 const timeline = [
-  { year: "2020", event: "Founded with a vision: a fashion marketplace where every seller gets a fair chance." },
-  { year: "2021", event: "Onboarded first 200 sellers. Launched with shoes, apparel, and accessories." },
-  { year: "2022", event: "Reached 1,000 sellers and 500K active buyers. Introduced seller analytics." },
-  { year: "2023", event: "Expanded to 4,000+ sellers. Revenue grew 28% year-over-year." },
-  { year: "2024", event: "Facing new challenges: margins tightening, competition intensifying. Time to evolve." },
+  { year: "2020", event: "Założeni z wizją: marketplace modowy, w którym każdy sprzedawca dostaje uczciwą szansę." },
+  { year: "2021", event: "Pierwszych 200 sprzedawców na pokładzie. Start z obuwiem, odzieżą i akcesoriami." },
+  { year: "2022", event: "Osiągamy 1 000 sprzedawców i 500 tys. aktywnych kupujących. Wprowadzamy analitykę dla sprzedawców." },
+  { year: "2023", event: "Rozrastamy się do ponad 4 000 sprzedawców. Przychody rosną o 28% rok do roku." },
+  { year: "2024", event: "Nowe wyzwania: kurczące się marże, rosnąca konkurencja. Czas na ewolucję." },
 ];
 
 export default function AboutPage() {
@@ -40,7 +40,7 @@ export default function AboutPage() {
       <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
         <Image
           src="/images/hero/hero-3.jpg"
-          alt="FashionHero shoes"
+          alt="Marketplace modowy FashionHero"
           fill
           className="object-cover"
           priority
@@ -48,12 +48,12 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-4">
           <p className="text-[11px] font-medium uppercase tracking-[1px] mb-4 text-white/70">
-            OUR STORY
+            NASZA HISTORIA
           </p>
           <h1 className="text-4xl md:text-5xl font-light leading-tight max-w-2xl">
-            Where sellers grow
+            Tu sprzedawcy rosną,
             <br />
-            and buyers discover.
+            a kupujący odkrywają.
           </h1>
         </div>
       </section>
@@ -61,13 +61,13 @@ export default function AboutPage() {
       {/* Mission */}
       <section className="max-w-3xl mx-auto px-4 py-20 text-center">
         <p className="text-[11px] font-medium uppercase tracking-[1px] text-warm-gray mb-6">
-          OUR MISSION
+          NASZA MISJA
         </p>
         <p className="text-xl md:text-2xl leading-relaxed text-charcoal">
-          FashionHero started with a simple idea: fashion shouldn&apos;t be
-          controlled by a few big players. We built a marketplace where
-          independent designers compete alongside global brands - and where
-          buyers discover styles they won&apos;t find anywhere else.
+          FashionHero powstał z prostego pomysłu: moda nie powinna być
+          kontrolowana przez kilku największych graczy. Zbudowaliśmy marketplace,
+          gdzie niezależni projektanci konkurują obok globalnych marek - a kupujący
+          odkrywają style, których nie znajdą nigdzie indziej.
         </p>
       </section>
 
@@ -75,7 +75,7 @@ export default function AboutPage() {
       <section className="bg-cream-light py-20">
         <div className="max-w-6xl mx-auto px-4">
           <p className="text-[11px] font-medium uppercase tracking-[1px] text-warm-gray mb-10 text-center">
-            WHAT WE STAND FOR
+            NASZE WARTOŚCI
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {values.map((value) => (
@@ -92,7 +92,7 @@ export default function AboutPage() {
       <section className="relative h-[40vh] min-h-[300px] overflow-hidden">
         <Image
           src="/images/hero/hero-2.jpg"
-          alt="People running in FashionHero shoes"
+          alt="Społeczność FashionHero"
           fill
           className="object-cover"
         />
@@ -101,7 +101,7 @@ export default function AboutPage() {
       {/* Timeline */}
       <section className="max-w-3xl mx-auto px-4 py-20">
         <p className="text-[11px] font-medium uppercase tracking-[1px] text-warm-gray mb-10 text-center">
-          OUR JOURNEY
+          NASZA DROGA
         </p>
         <div className="space-y-8">
           {timeline.map((item) => (
@@ -120,17 +120,17 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="bg-charcoal text-white py-20 text-center">
         <p className="text-[11px] font-medium uppercase tracking-[1px] text-white/50 mb-4">
-          READY TO STEP FORWARD?
+          GOTOWY/A NA KOLEJNY KROK?
         </p>
         <h2 className="text-3xl md:text-4xl font-light mb-8">
-          Start exploring.
+          Zacznij odkrywać.
         </h2>
         <div className="flex gap-4 justify-center">
           <Link href="/collections/mens" className="btn-cta bg-white text-charcoal hover:bg-white/90">
-            SHOP MEN
+            KUP DLA NIEGO
           </Link>
           <Link href="/collections/womens" className="btn-cta bg-white text-charcoal hover:bg-white/90">
-            SHOP WOMEN
+            KUP DLA NIEJ
           </Link>
         </div>
       </section>

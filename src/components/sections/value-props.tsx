@@ -1,21 +1,21 @@
 const props = [
   {
-    label: "DISCOVERY",
-    title: "Thousands Of Sellers, One Search",
+    label: "ODKRYWANIE",
+    title: "Tysiące sprzedawców, jedna wyszukiwarka",
     description:
-      "From top brands to independent designers - find exactly what you're looking for across thousands of curated sellers.",
+      "Od największych marek po niezależnych projektantów — znajdziesz tu dokładnie to, czego szukasz wśród tysięcy sprawdzonych sprzedawców.",
   },
   {
-    label: "TRUST",
-    title: "Verified Sellers, Real Reviews",
+    label: "ZAUFANIE",
+    title: "Zweryfikowani sprzedawcy, prawdziwe opinie",
     description:
-      "Every seller on FashionHero is vetted. Real customer reviews and our Pro seller program help you shop with confidence.",
+      "Każdy sprzedawca na FashionHero przechodzi weryfikację. Realne opinie kupujących i program Pro pomagają kupować bez obaw.",
   },
   {
-    label: "VARIETY",
-    title: "From Streetwear To Sustainable",
+    label: "RÓŻNORODNOŚĆ",
+    title: "Od streetwearu po ubrania ekologiczne",
     description:
-      "Premium brands, vintage finds, handmade originals, everyday basics. Whatever your style, it's here.",
+      "Marki premium, perełki vintage, rękodzieło, codzienne podstawy. Jakikolwiek masz styl — znajdziesz go tutaj.",
   },
 ];
 

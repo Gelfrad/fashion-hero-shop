@@ -20,15 +20,15 @@ export default function RegisterPage() {
     setError("");
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setError("Please fill in all fields.");
+      setError("Wypełnij wszystkie pola.");
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError("Hasła nie są takie same.");
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError("Hasło musi mieć co najmniej 6 znaków.");
       return;
     }
 
@@ -40,14 +40,14 @@ export default function RegisterPage() {
     <div className="max-w-md mx-auto px-4 py-16">
       {/* Breadcrumb */}
       <nav className="text-[11px] text-warm-gray mb-8 tracking-wide">
-        <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
+        <Link href="/" className="hover:text-charcoal transition-colors">Strona główna</Link>
         <span className="mx-1.5">/</span>
-        <Link href="/account" className="hover:text-charcoal transition-colors">Account</Link>
+        <Link href="/account" className="hover:text-charcoal transition-colors">Konto</Link>
         <span className="mx-1.5">/</span>
-        <span className="text-charcoal">Create Account</span>
+        <span className="text-charcoal">Załóż konto</span>
       </nav>
 
-      <h1 className="text-2xl font-light text-charcoal mb-8 text-center">Create Account</h1>
+      <h1 className="text-2xl font-light text-charcoal mb-8 text-center">Załóż konto</h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
@@ -56,7 +56,7 @@ export default function RegisterPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label htmlFor="firstName" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-              First Name
+              Imię
             </label>
             <input
               id="firstName"
@@ -68,7 +68,7 @@ export default function RegisterPage() {
           </div>
           <div>
             <label htmlFor="lastName" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-              Last Name
+              Nazwisko
             </label>
             <input
               id="lastName"
@@ -81,7 +81,7 @@ export default function RegisterPage() {
         </div>
         <div>
           <label htmlFor="email" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-            Email
+            E-mail
           </label>
           <input
             id="email"
@@ -89,12 +89,12 @@ export default function RegisterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
-            placeholder="you@example.com"
+            placeholder="ty@przyklad.pl"
           />
         </div>
         <div>
           <label htmlFor="password" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-            Password
+            Hasło
           </label>
           <input
             id="password"
@@ -102,12 +102,12 @@ export default function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
-            placeholder="At least 6 characters"
+            placeholder="Co najmniej 6 znaków"
           />
         </div>
         <div>
           <label htmlFor="confirmPassword" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-            Confirm Password
+            Potwierdź hasło
           </label>
           <input
             id="confirmPassword"
@@ -118,14 +118,14 @@ export default function RegisterPage() {
           />
         </div>
         <button type="submit" className="btn-cta w-full text-[12px]">
-          CREATE ACCOUNT
+          UTWÓRZ KONTO
         </button>
       </form>
 
       <p className="text-center text-[13px] text-warm-gray mt-8">
-        Already have an account?{" "}
+        Masz już konto?{" "}
         <Link href="/account/login" className="text-charcoal underline hover:opacity-60 transition-opacity">
-          Sign in
+          Zaloguj się
         </Link>
       </p>
     </div>

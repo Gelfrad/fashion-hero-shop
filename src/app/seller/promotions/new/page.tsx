@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { formatLabels, formatDescriptions, keywordSuggestions } from "@/data/campaigns";
 import { getProductsBySeller } from "@/data/products";
-import { wallet } from "@/data/wallet";
 import { calculateBalanceRunway, fmtPLNAmount } from "@/lib/billing";
 import type { CampaignFormat, Product } from "@/types";
 import { cn } from "@/lib/utils";
+import { useMarketplace, useWalletForCurrentSeller, MARKETPLACE_CURRENT_SELLER_ID } from "@/store/marketplace-store";
 
 const CURRENT_SELLER_SLUG = "bella-donna";
 
@@ -18,18 +18,45 @@ const STEPS = ["Format", "Konfiguracja", "Podsumowanie"] as const;
 export default function NewCampaignPage() {
   const router = useRouter();
   const sellerProducts = getProductsBySeller(CURRENT_SELLER_SLUG);
+  const { addCampaign } = useMarketplace();
+  const wallet = useWalletForCurrentSeller();
 
   const [step, setStep] = useState(0);
   const [format, setFormat] = useState<CampaignFormat | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [keywords, setKeywords] = useState<string[]>(["sweter", "wełniany sweter"]);
   const [keywordInput, setKeywordInput] = useState("");
+  const [campaignName, setCampaignName] = useState("");
   const [dailyBudget, setDailyBudget] = useState(80);
   const [totalBudget, setTotalBudget] = useState(560);
   const [cpc, setCpc] = useState(1.2);
   const [duration, setDuration] = useState(7);
   const [estimating, setEstimating] = useState(false);
   const [estimated, setEstimated] = useState(false);
+
+  function launchCampaign() {
+    if (!format || selectedProducts.length === 0) return;
+    const autoName = generateCampaignName(format, selectedProducts, sellerProducts);
+    const finalName = campaignName.trim() || autoName;
+    const newCampaign = addCampaign({
+      sellerId: MARKETPLACE_CURRENT_SELLER_ID,
+      name: finalName,
+      format,
+      status: "active",
+      productIds: selectedProducts,
+      keywords: format === "category_banner" ? [] : keywords,
+      dailyBudget,
+      totalBudget,
+      maxCpc: format === "category_banner" ? 0 : cpc,
+      durationDays: duration,
+      // banner-specific fields filled when format === "category_banner"
+      bannerImage: format === "category_banner" ? "/images/hero/hero-2.jpg" : undefined,
+      bannerHeadline: format === "category_banner" ? finalName : undefined,
+      bannerCta: format === "category_banner" ? "Zobacz kolekcję" : undefined,
+      bannerCategory: format === "category_banner" ? "womens" : undefined,
+    });
+    router.push(`/seller/promotions/${newCampaign.id}`);
+  }
 
   const goNext = () => {
     if (step === 1) {
@@ -87,12 +114,13 @@ export default function NewCampaignPage() {
               {i < step ? "✓" : i + 1}
             </div>
             <span className={cn(
-              "text-[11px] uppercase tracking-[1px]",
-              i === step ? "text-charcoal font-medium" : "text-warm-gray",
+              "text-[11px] uppercase tracking-[1px] whitespace-nowrap",
+              // Hide labels on mobile, show only on sm+. Active step's label still shows for context.
+              i === step ? "text-charcoal font-medium" : "text-warm-gray hidden sm:inline",
             )}>
               {label}
             </span>
-            {i < STEPS.length - 1 && <div className="flex-1 h-px bg-black/10 ml-2" />}
+            {i < STEPS.length - 1 && <div className="flex-1 h-px bg-black/10 sm:ml-2" />}
           </div>
         ))}
       </div>
@@ -138,7 +166,7 @@ export default function NewCampaignPage() {
       <div className="flex items-center justify-between mt-6">
         <button
           onClick={goBack}
-          className="text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded border border-black/15 hover:border-charcoal transition-colors"
+          className="text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-all duration-200"
         >
           Wstecz
         </button>
@@ -152,8 +180,9 @@ export default function NewCampaignPage() {
           </button>
         ) : (
           <button
-            onClick={() => router.push("/seller/promotions")}
-            className="text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded bg-charcoal text-white hover:bg-charcoal-light transition-colors"
+            onClick={launchCampaign}
+            disabled={!format || selectedProducts.length === 0}
+            className="text-[12px] font-medium uppercase tracking-[0.5px] px-5 py-3 rounded bg-charcoal text-white hover:bg-charcoal-light transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Uruchom kampanię
           </button>
@@ -362,7 +391,7 @@ function ConfigStep(props: {
             <button
               type="button"
               onClick={() => addKeyword(keywordInput)}
-              className="px-4 py-2 text-xs uppercase tracking-wide rounded-md border border-black/15 hover:bg-cream-light transition-colors"
+              className="px-4 py-2 text-xs uppercase tracking-wide rounded-md border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-all duration-200"
             >
               Dodaj
             </button>
@@ -375,7 +404,7 @@ function ConfigStep(props: {
                   key={s}
                   type="button"
                   onClick={() => addKeyword(s)}
-                  className="px-2.5 py-1 text-[11px] rounded-full border border-dashed border-black/20 text-warm-gray hover:text-charcoal hover:border-charcoal/40 transition-colors"
+                  className="px-2.5 py-1 text-[11px] rounded-full border border-dashed border-charcoal/50 text-charcoal hover:bg-charcoal hover:text-white hover:border-charcoal transition-all duration-200"
                 >
                   + {s}
                 </button>
@@ -535,7 +564,8 @@ function ReviewStep({
 }
 
 function WalletHint({ dailyBudget, duration }: { dailyBudget: number; duration: number }) {
-  const balance = wallet.balance;
+  const wallet = useWalletForCurrentSeller();
+  const balance = wallet?.balance ?? 0;
   const runwayDays = calculateBalanceRunway(balance, dailyBudget);
   const campaignTotal = dailyBudget * duration;
   const insufficient = balance < dailyBudget;
@@ -683,4 +713,15 @@ function SliderField({
       {hint && <p className="text-[11px] text-warm-gray mt-2">{hint}</p>}
     </div>
   );
+}
+
+function generateCampaignName(format: CampaignFormat, productIds: string[], allProducts: Product[]): string {
+  const firstProduct = allProducts.find((p) => p.id === productIds[0]);
+  const baseName = firstProduct?.name ?? "Kampania";
+  const suffix =
+    format === "top_search" ? "Top wyszukiwań" :
+    format === "category_banner" ? "Baner kategorii" :
+    "Podobne produkty";
+  const more = productIds.length > 1 ? ` +${productIds.length - 1}` : "";
+  return `${baseName}${more} — ${suffix}`;
 }

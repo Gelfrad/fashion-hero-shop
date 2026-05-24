@@ -3,27 +3,28 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  wallet as initialWallet,
-  transactions as initialTransactions,
-  invoices as initialInvoices,
-} from "@/data/wallet";
-import { getCampaign } from "@/data/campaigns";
-import {
   topupWallet,
   sendInvoiceToKSeF,
   fmtPLNAmount,
   fmtDate,
 } from "@/lib/billing";
-import type { Transaction, Invoice, KsefStatus, PaymentMethod } from "@/types/billing";
+import type { KsefStatus, PaymentMethod } from "@/types/billing";
 import { MPP_THRESHOLD_PLN } from "@/types/billing";
 import { cn } from "@/lib/utils";
+import {
+  useWalletForCurrentSeller,
+  useTransactionsForCurrentSeller,
+  useInvoicesForCurrentSeller,
+  useMarketplace,
+} from "@/store/marketplace-store";
 
 const PRESET_AMOUNTS = [50, 100, 250, 500];
 
 export default function WalletPage() {
-  const [walletState, setWalletState] = useState(initialWallet);
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
-  const [invoices, setInvoices] = useState<Invoice[]>(initialInvoices);
+  const walletState = useWalletForCurrentSeller();
+  const transactions = useTransactionsForCurrentSeller();
+  const invoices = useInvoicesForCurrentSeller();
+  const { applyTopup, updateInvoiceKsef, hydrated } = useMarketplace();
   const [selectedAmount, setSelectedAmount] = useState<number>(100);
   const [customAmount, setCustomAmount] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("blik");
@@ -52,18 +53,20 @@ export default function WalletPage() {
     return false;
   })();
 
-  const canTopup = amount >= 20 && !isProcessing && methodValid && paymentMethod !== "bank_transfer";
+  const canTopup = !!walletState && amount >= 20 && !isProcessing && methodValid && paymentMethod !== "bank_transfer";
 
   async function handleTopup() {
-    if (!canTopup) return;
+    if (!canTopup || !walletState) return;
     setIsProcessing(true);
     setLastTopupAmount(null);
 
     try {
       const result = await topupWallet(walletState.sellerId, amount, walletState.balance, paymentMethod);
-      setWalletState({ ...walletState, balance: result.newBalance });
-      setTransactions([result.transaction, ...transactions]);
-      setInvoices([result.invoice, ...invoices]);
+      applyTopup({
+        transaction: result.transaction,
+        invoice: result.invoice,
+        newBalance: result.newBalance,
+      });
       setLastTopupAmount(amount);
       setCustomAmount("");
       setSelectedAmount(100);
@@ -71,22 +74,23 @@ export default function WalletPage() {
 
       // Watch KSeF status update (mock async)
       const ksefResult = await sendInvoiceToKSeF(result.invoice.id);
-      setInvoices((curr) =>
-        curr.map((i) =>
-          i.id === result.invoice.id
-            ? {
-                ...i,
-                ksefStatus: ksefResult.ksefStatus,
-                ksefRefNumber: ksefResult.ksefRefNumber,
-                ksefSentAt: ksefResult.ksefSentAt,
-                ksefError: ksefResult.ksefError,
-              }
-            : i,
-        ),
-      );
+      updateInvoiceKsef(result.invoice.id, {
+        ksefStatus: ksefResult.ksefStatus,
+        ksefRefNumber: ksefResult.ksefRefNumber,
+        ksefSentAt: ksefResult.ksefSentAt,
+        ksefError: ksefResult.ksefError,
+      });
     } finally {
       setIsProcessing(false);
     }
+  }
+
+  if (!hydrated || !walletState) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 lg:px-8 py-12">
+        <p className="text-sm text-warm-gray">Ładowanie salda…</p>
+      </div>
+    );
   }
 
   return (
@@ -321,8 +325,8 @@ export default function WalletPage() {
           Dokumenty pobierzesz tutaj lub w aplikacji <strong>Mój KSeF</strong>.
         </p>
 
-        <div className="rounded-xl border border-black/10 bg-white overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="rounded-xl border border-black/10 bg-white overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="text-left text-[10px] uppercase tracking-wide text-warm-gray border-b border-black/10 bg-cream-light/40">
                 <th className="px-4 py-3 font-medium">Numer</th>
@@ -353,7 +357,7 @@ export default function WalletPage() {
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/seller/promotions/wallet/invoice/${inv.id}`}
-                        className="text-[11px] uppercase tracking-wide px-3 py-1.5 rounded-full border border-black/15 hover:bg-cream-light transition-colors"
+                        className="text-[11px] uppercase tracking-wide px-3 py-1.5 rounded-full border border-charcoal text-charcoal hover:bg-charcoal hover:text-white transition-all duration-200"
                       >
                         Pobierz PDF
                       </Link>
@@ -373,8 +377,8 @@ export default function WalletPage() {
           Doładowania i kliknięcia w kolejności od najnowszych.
         </p>
 
-        <div className="rounded-xl border border-black/10 bg-white overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="rounded-xl border border-black/10 bg-white overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="text-left text-[10px] uppercase tracking-wide text-warm-gray border-b border-black/10 bg-cream-light/40">
                 <th className="px-4 py-3 font-medium">Data</th>
@@ -388,10 +392,6 @@ export default function WalletPage() {
                   <td className="px-4 py-3 text-warm-gray whitespace-nowrap">{fmtDate(t.date, true)}</td>
                   <td className="px-4 py-3 text-charcoal">
                     {t.description}
-                    {t.campaignId && (() => {
-                      const camp = getCampaign(t.campaignId);
-                      return camp ? null : null;
-                    })()}
                   </td>
                   <td
                     className={cn(

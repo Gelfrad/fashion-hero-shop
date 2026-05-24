@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/product-card";
 import { ChevronDownIcon, CloseIcon } from "@/components/icons";
 import type { Product, ShoeType, ShoeMaterial } from "@/types";
 import { getSeller } from "@/data/sellers";
+import { usePromotedProductIds } from "@/store/marketplace-store";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
@@ -25,6 +26,7 @@ interface CollectionViewProps {
 }
 
 export function CollectionView({ products, collectionName, initialSellerSlug }: CollectionViewProps) {
+  const { ids: promotedIds, bidByProduct } = usePromotedProductIds();
   const [gender, setGender] = useState<GenderFilter>("all");
   const [sort, setSort] = useState<SortOption>("featured");
   const [priceRange, setPriceRange] = useState<PriceRange>("all");
@@ -84,9 +86,9 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
       case "featured":
       default: {
         const promoted = result
-          .filter((p) => p.promoted)
-          .sort((a, b) => (b.promotionBid ?? 0) - (a.promotionBid ?? 0));
-        const organic = result.filter((p) => !p.promoted);
+          .filter((p) => promotedIds.has(p.id))
+          .sort((a, b) => (bidByProduct.get(b.id) ?? 0) - (bidByProduct.get(a.id) ?? 0));
+        const organic = result.filter((p) => !promotedIds.has(p.id));
         const maxPromotedSlots = Math.max(1, Math.floor(result.length * PROMOTED_CAP));
         const promotedTop = promoted.slice(0, maxPromotedSlots);
         const promotedRest = promoted.slice(maxPromotedSlots);
@@ -96,14 +98,14 @@ export function CollectionView({ products, collectionName, initialSellerSlug }: 
     }
 
     return result;
-  }, [products, gender, sort, priceRange, shoeTypes, materials, sizes, sellerSlugs]);
+  }, [products, gender, sort, priceRange, shoeTypes, materials, sizes, sellerSlugs, promotedIds, bidByProduct]);
 
   const promotedShownCount = useMemo(() => {
     if (sort !== "featured") return 0;
     const maxSlots = Math.max(1, Math.floor(filtered.length * PROMOTED_CAP));
-    const promotedInList = filtered.filter((p) => p.promoted).length;
+    const promotedInList = filtered.filter((p) => promotedIds.has(p.id)).length;
     return Math.min(maxSlots, promotedInList);
-  }, [filtered, sort]);
+  }, [filtered, sort, promotedIds]);
 
   const activeFilterCount =
     (gender !== "all" ? 1 : 0) +

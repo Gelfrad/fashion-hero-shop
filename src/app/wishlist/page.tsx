@@ -17,30 +17,30 @@ export default function WishlistPage() {
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-[11px] text-warm-gray mb-6">
         <Link href="/" className="hover:text-charcoal transition-colors">
-          Home
+          Strona główna
         </Link>
         <span>/</span>
-        <span className="uppercase tracking-[0.5px] text-charcoal">Wishlist</span>
+        <span className="uppercase tracking-[0.5px] text-charcoal">Lista życzeń</span>
       </div>
 
-      <h1 className="text-3xl font-light text-charcoal mb-2">Wishlist</h1>
+      <h1 className="text-3xl font-light text-charcoal mb-2">Lista życzeń</h1>
       <p className="text-sm text-warm-gray mb-10">
         {wishlistedProducts.length === 0
-          ? "You haven't saved any items yet."
-          : `${wishlistedProducts.length} saved item${wishlistedProducts.length === 1 ? "" : "s"}`}
+          ? "Nie zapisano jeszcze żadnych produktów."
+          : `${wishlistedProducts.length} ${wishlistedProducts.length === 1 ? "zapisany produkt" : "zapisanych produktów"}`}
       </p>
 
       {wishlistedProducts.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-warm-gray mb-6">
-            Tap the heart icon on any product to save it here.
+            Kliknij ikonę serca przy dowolnym produkcie, aby zapisać go tutaj.
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/collections/mens" className="btn-cta">
-              SHOP MEN
+              KUP DLA NIEGO
             </Link>
             <Link href="/collections/womens" className="btn-cta-outline">
-              SHOP WOMEN
+              KUP DLA NIEJ
             </Link>
           </div>
         </div>

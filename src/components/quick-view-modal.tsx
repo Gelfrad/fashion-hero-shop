@@ -66,7 +66,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1 hover:opacity-60 transition-opacity z-10"
-          aria-label="Close quick view"
+          aria-label="Zamknij podgląd"
         >
           <CloseIcon />
         </button>
@@ -112,10 +112,10 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
             <h2 className="text-xl font-normal text-charcoal">{product.name}</h2>
 
             <div className="flex items-center gap-3">
-              <span className="text-lg font-medium text-charcoal">{product.price} zl</span>
+              <span className="text-lg font-medium text-charcoal">{product.price} zł</span>
               {product.originalPrice && (
                 <span className="text-sm text-warm-gray line-through">
-                  {product.originalPrice} zl
+                  {product.originalPrice} zł
                 </span>
               )}
             </div>
@@ -137,7 +137,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
               disabled={!selectedSize}
               className="w-full py-3.5 bg-charcoal text-white text-[12px] font-medium uppercase tracking-[0.6px] rounded-full hover:bg-charcoal-light transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {selectedSize ? "ADD TO CART - " + product.price + " zl" : "SELECT A SIZE"}
+              {selectedSize ? "DODAJ DO KOSZYKA · " + product.price + " zł" : "WYBIERZ ROZMIAR"}
             </button>
 
             <Link
@@ -145,7 +145,7 @@ export function QuickViewModal({ product, onClose }: QuickViewModalProps) {
               onClick={onClose}
               className="text-center text-[12px] font-medium uppercase tracking-[0.5px] text-charcoal underline underline-offset-4 hover:opacity-60 transition-opacity"
             >
-              VIEW FULL DETAILS
+              ZOBACZ PEŁNE SZCZEGÓŁY
             </Link>
           </div>
         </div>

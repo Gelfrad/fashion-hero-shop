@@ -16,7 +16,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     if (!email || !password) {
-      setError("Please fill in all fields.");
+      setError("Wypełnij wszystkie pola.");
       return;
     }
     await login(email, password);
@@ -27,14 +27,14 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto px-4 py-16">
       {/* Breadcrumb */}
       <nav className="text-[11px] text-warm-gray mb-8 tracking-wide">
-        <Link href="/" className="hover:text-charcoal transition-colors">Home</Link>
+        <Link href="/" className="hover:text-charcoal transition-colors">Strona główna</Link>
         <span className="mx-1.5">/</span>
-        <Link href="/account" className="hover:text-charcoal transition-colors">Account</Link>
+        <Link href="/account" className="hover:text-charcoal transition-colors">Konto</Link>
         <span className="mx-1.5">/</span>
-        <span className="text-charcoal">Sign In</span>
+        <span className="text-charcoal">Logowanie</span>
       </nav>
 
-      <h1 className="text-2xl font-light text-charcoal mb-8 text-center">Sign In</h1>
+      <h1 className="text-2xl font-light text-charcoal mb-8 text-center">Logowanie</h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
@@ -42,7 +42,7 @@ export default function LoginPage() {
         )}
         <div>
           <label htmlFor="email" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-            Email
+            E-mail
           </label>
           <input
             id="email"
@@ -50,12 +50,12 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
-            placeholder="you@example.com"
+            placeholder="ty@przyklad.pl"
           />
         </div>
         <div>
           <label htmlFor="password" className="block text-[11px] font-medium uppercase tracking-[0.8px] text-charcoal mb-1.5">
-            Password
+            Hasło
           </label>
           <input
             id="password"
@@ -63,18 +63,18 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-black/15 rounded px-3 py-2.5 text-[14px] text-charcoal outline-none focus:border-charcoal transition-colors"
-            placeholder="Enter your password"
+            placeholder="Wpisz hasło"
           />
         </div>
         <button type="submit" className="btn-cta w-full text-[12px]">
-          SIGN IN
+          ZALOGUJ SIĘ
         </button>
       </form>
 
       <p className="text-center text-[13px] text-warm-gray mt-8">
-        Don&apos;t have an account?{" "}
+        Nie masz jeszcze konta?{" "}
         <Link href="/account/register" className="text-charcoal underline hover:opacity-60 transition-opacity">
-          Create one
+          Załóż konto
         </Link>
       </p>
     </div>

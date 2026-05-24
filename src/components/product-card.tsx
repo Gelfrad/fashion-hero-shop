@@ -7,6 +7,7 @@ import type { Product } from "@/types";
 import { WishlistButton } from "./wishlist-button";
 import { useQuickView } from "./quick-view-provider";
 import { getSellerById } from "@/data/sellers";
+import { usePromotedProductIds } from "@/store/marketplace-store";
 
 interface ProductCardProps {
   product: Product;
@@ -26,14 +27,16 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const firstColor = product.colors[0];
   const { openQuickView } = useQuickView();
   const seller = getSellerById(product.sellerId);
+  const { ids: promotedIds } = usePromotedProductIds();
+  const isPromoted = promotedIds.has(product.id);
   const badgeLabel = product.badge === "new"
-    ? "NEW"
+    ? "NOWOŚĆ"
     : product.badge === "new-color"
-    ? "NEW COLOR"
+    ? "NOWY KOLOR"
     : product.badge === "bestseller"
     ? "BESTSELLER"
     : product.badge === "sale"
-    ? "SALE"
+    ? "WYPRZEDAŻ"
     : null;
 
   const imageSrc = firstColor.image;
@@ -149,7 +152,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         )}
       </div>
 
-      {product.promoted && (
+      {isPromoted && (
         <p
           className="text-[10px] text-warm-gray/80 pt-0.5"
           title={

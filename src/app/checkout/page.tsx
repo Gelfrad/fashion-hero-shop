@@ -20,21 +20,21 @@ export default function CheckoutPage() {
         <ol className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.6px] text-warm-gray">
           <li>
             <Link href="/" className="hover:text-charcoal transition-colors">
-              Home
+              Strona główna
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="text-charcoal">Checkout</li>
+          <li className="text-charcoal">Kasa</li>
         </ol>
       </nav>
 
-      <h1 className="text-[32px] font-normal text-charcoal mb-8">Checkout</h1>
+      <h1 className="text-[32px] font-normal text-charcoal mb-8">Kasa</h1>
 
       {items.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-sm text-warm-gray mb-6">Your cart is empty.</p>
+          <p className="text-sm text-warm-gray mb-6">Twój koszyk jest pusty.</p>
           <Link href="/" className="btn-cta">
-            CONTINUE SHOPPING
+            KONTYNUUJ ZAKUPY
           </Link>
         </div>
       ) : (
@@ -44,71 +44,71 @@ export default function CheckoutPage() {
             {/* Shipping Information */}
             <section className="mb-10">
               <h2 className="text-[12px] font-medium uppercase tracking-[0.8px] text-charcoal mb-5 pb-2 border-b border-border">
-                SHIPPING INFORMATION
+                DANE DO WYSYŁKI
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">First Name</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Imię</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="First name"
+                    placeholder="Imię"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">Last Name</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Nazwisko</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="Last name"
+                    placeholder="Nazwisko"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs text-warm-gray mb-1.5">Email</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">E-mail</label>
                   <input
                     type="email"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="you@example.com"
+                    placeholder="ty@przyklad.pl"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs text-warm-gray mb-1.5">Address</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Adres</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="Street address"
+                    placeholder="Ulica i numer"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">City</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Miasto</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="City"
+                    placeholder="Miasto"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">State</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Województwo</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="State"
+                    placeholder="Województwo"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">ZIP Code</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Kod pocztowy</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    placeholder="ZIP"
+                    placeholder="00-000"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-warm-gray mb-1.5">Country</label>
+                  <label className="block text-xs text-warm-gray mb-1.5">Kraj</label>
                   <input
                     type="text"
                     className="w-full border border-border px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-charcoal transition-colors"
-                    defaultValue="United States"
+                    defaultValue="Polska"
                     readOnly
                   />
                 </div>
@@ -118,17 +118,17 @@ export default function CheckoutPage() {
             {/* Payment */}
             <section className="mb-10">
               <h2 className="text-[12px] font-medium uppercase tracking-[0.8px] text-charcoal mb-5 pb-2 border-b border-border">
-                PAYMENT
+                PŁATNOŚĆ
               </h2>
               <div className="bg-cream-light px-6 py-8 text-center">
-                <p className="text-sm text-warm-gray mb-1">Payment integration coming soon.</p>
-                <p className="text-xs text-warm-gray/60">This is a demo checkout page.</p>
+                <p className="text-sm text-warm-gray mb-1">Integracja płatności wkrótce.</p>
+                <p className="text-xs text-warm-gray/60">To jest demonstracyjna strona kasy.</p>
               </div>
             </section>
 
             {/* Place Order */}
             <button className="btn-cta w-full sm:w-auto sm:min-w-[280px]">
-              PLACE ORDER
+              ZŁÓŻ ZAMÓWIENIE
             </button>
           </div>
 
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
           <div>
             <div className="bg-cream-light p-6 sticky top-20">
               <h2 className="text-[12px] font-medium uppercase tracking-[0.8px] text-charcoal mb-5 pb-2 border-b border-cream-dark">
-                ORDER SUMMARY
+                PODSUMOWANIE ZAMÓWIENIA
               </h2>
 
               <div className="space-y-4 mb-6">
@@ -154,12 +154,12 @@ export default function CheckoutPage() {
                         {item.product.name}
                       </h3>
                       <p className="text-xs text-warm-gray">
-                        {item.color.name} / Size {item.size}
+                        {item.color.name} / Rozmiar {item.size}
                       </p>
-                      <p className="text-xs text-warm-gray">Qty: {item.quantity}</p>
+                      <p className="text-xs text-warm-gray">Ilość: {item.quantity}</p>
                     </div>
                     <span className="text-sm font-medium text-charcoal">
-                      {(item.product.price * item.quantity).toFixed(0)} zl
+                      {(item.product.price * item.quantity).toFixed(0)} zł
                     </span>
                   </div>
                 ))}
@@ -167,18 +167,18 @@ export default function CheckoutPage() {
 
               <div className="space-y-2 pt-4 border-t border-cream-dark">
                 <div className="flex justify-between text-sm">
-                  <span className="text-warm-gray">Subtotal</span>
-                  <span className="font-medium">{subtotal.toFixed(0)} zl</span>
+                  <span className="text-warm-gray">Suma częściowa</span>
+                  <span className="font-medium">{subtotal.toFixed(0)} zł</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-warm-gray">Shipping</span>
+                  <span className="text-warm-gray">Dostawa</span>
                   <span className="font-medium">
-                    {shipping === 0 ? "Free" : `${shipping.toFixed(2)} zl`}
+                    {shipping === 0 ? "Darmowa" : `${shipping.toFixed(2)} zł`}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm pt-3 border-t border-cream-dark mt-3">
-                  <span className="font-medium text-charcoal">Total</span>
-                  <span className="font-medium text-charcoal text-lg">{total.toFixed(2)} zl</span>
+                  <span className="font-medium text-charcoal">Łącznie</span>
+                  <span className="font-medium text-charcoal text-lg">{total.toFixed(2)} zł</span>
                 </div>
               </div>
             </div>

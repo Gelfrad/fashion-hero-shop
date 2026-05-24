@@ -3,30 +3,30 @@ import Image from "next/image";
 
 const promos = [
   {
-    title: "Trail Collection",
+    title: "Kolekcja w teren",
     gradient: "linear-gradient(170deg, #3d5a3d 0%, #5c7a5c 40%, #8a9a7a 100%)",
     image: "/images/products/product-3.jpg",
     links: [
-      { label: "SHOP MEN", href: "/collections/mens" },
-      { label: "SHOP WOMEN", href: "/collections/womens" },
+      { label: "MĘSKA", href: "/collections/mens" },
+      { label: "DAMSKA", href: "/collections/womens" },
     ],
   },
   {
-    title: "Everyday Essentials",
+    title: "Codzienne podstawy",
     gradient: "linear-gradient(170deg, #6b5b4a 0%, #a89279 40%, #c4b59a 100%)",
     image: "/images/products/product-4.jpg",
     links: [
-      { label: "SHOP MEN", href: "/collections/mens" },
-      { label: "SHOP WOMEN", href: "/collections/womens" },
+      { label: "MĘSKA", href: "/collections/mens" },
+      { label: "DAMSKA", href: "/collections/womens" },
     ],
   },
   {
-    title: "Sale",
+    title: "Wyprzedaż",
     gradient: "linear-gradient(170deg, #9e4040 0%, #c06060 40%, #d48a8a 100%)",
     image: "/images/products/product-7.jpg",
     links: [
-      { label: "SHOP MEN", href: "/collections/sale" },
-      { label: "SHOP WOMEN", href: "/collections/sale" },
+      { label: "MĘSKA", href: "/collections/sale" },
+      { label: "DAMSKA", href: "/collections/sale" },
     ],
   },
 ];

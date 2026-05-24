@@ -26,7 +26,7 @@ export function WishlistButton({ productId, className }: WishlistButtonProps) {
   return (
     <button
       onClick={handleClick}
-      aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+      aria-label={wishlisted ? "Usuń z listy życzeń" : "Dodaj do listy życzeń"}
       className={cn(
         "transition-transform duration-200 ease-out",
         animating && "scale-125",

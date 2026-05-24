@@ -51,8 +51,8 @@ function getEstimatedDelivery(): string {
   const maxDays = 7;
   const startDate = new Date(now.getTime() + minDays * 86400000);
   const endDate = new Date(now.getTime() + maxDays * 86400000);
-  const fmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
-  return `${fmt.format(startDate)} - ${fmt.format(endDate)}`;
+  const fmt = new Intl.DateTimeFormat("pl-PL", { day: "numeric", month: "long" });
+  return `${fmt.format(startDate)} – ${fmt.format(endDate)}`;
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
@@ -65,10 +65,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const deliveryDate = useMemo(() => getEstimatedDelivery(), []);
 
   const collectionName = product.category === "men"
-    ? "Men's Shoes"
+    ? "Buty męskie"
     : product.category === "women"
-    ? "Women's Shoes"
-    : "Shoes";
+    ? "Buty damskie"
+    : "Buty";
 
   const collectionSlug = product.category === "men"
     ? "mens"
@@ -86,7 +86,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       {/* Breadcrumb — subtle */}
       <nav className="flex items-center gap-1.5 text-[11px] text-warm-gray/70">
         <Link href="/" className="hover:text-charcoal transition-colors">
-          Home
+          Strona główna
         </Link>
         <span>/</span>
         <Link href={`/collections/${collectionSlug}`} className="hover:text-charcoal transition-colors">
@@ -110,7 +110,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             href={`/collections/all?seller=${seller.slug}`}
             className="text-[12px] text-warm-gray hover:text-charcoal transition-colors mt-1 inline-block"
           >
-            Sold by <span className="underline">{seller.name}</span>
+            Sprzedawca: <span className="underline">{seller.name}</span>
             {seller.rating >= 4.5 && (
               <span className="inline-block ml-1 text-[9px] bg-charcoal/10 text-charcoal/70 px-1 py-0.5 rounded uppercase tracking-wide no-underline">
                 Pro
@@ -122,10 +122,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Price */}
       <div className="flex items-center gap-3">
-        <span className="text-lg font-medium text-charcoal">{product.price} zl</span>
+        <span className="text-lg font-medium text-charcoal">{product.price} zł</span>
         {product.originalPrice && (
           <span className="text-sm text-warm-gray line-through">
-            {product.originalPrice} zl
+            {product.originalPrice} zł
           </span>
         )}
       </div>
@@ -136,14 +136,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <>
             <span className="inline-block w-2 h-2 rounded-full bg-amber-500" />
             <span className="text-xs text-amber-700 font-medium">
-              Low Stock — Only {stock.quantity} left
+              Ostatnie sztuki — zostało {stock.quantity}
             </span>
           </>
         ) : (
           <>
             <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
             <span className="text-xs text-green-700 font-medium">
-              In Stock — Ready to Ship
+              Dostępne — wysyłka w 24h
             </span>
           </>
         )}
@@ -169,19 +169,19 @@ export function ProductInfo({ product }: ProductInfoProps) {
         disabled={!selectedSize}
         className="w-full py-4 bg-charcoal text-white text-[12px] font-medium uppercase tracking-[0.6px] rounded-full hover:bg-charcoal-light transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        {selectedSize ? "ADD TO CART - " + product.price + " zl" : "SELECT A SIZE"}
+        {selectedSize ? "DODAJ DO KOSZYKA · " + product.price + " zł" : "WYBIERZ ROZMIAR"}
       </button>
 
       {/* Shipping info */}
       <div className="flex flex-col gap-2 pt-2 border-t border-border">
         <p className="text-xs text-warm-gray">
-          Free Shipping on Orders over 299 zl
+          Darmowa dostawa od 299 zł
         </p>
         <p className="text-xs text-warm-gray">
-          Estimated delivery: {deliveryDate}
+          Przewidywana dostawa: {deliveryDate}
         </p>
         <p className="text-xs text-warm-gray">
-          Easy Returns
+          Darmowe zwroty 30 dni
         </p>
       </div>
     </div>

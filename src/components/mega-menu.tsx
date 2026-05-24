@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import { CloseIcon } from "./icons";
 
 type MenuKey = "MEN" | "WOMEN" | "SALE";
 
@@ -13,85 +12,85 @@ interface MenuColumn {
 
 const menMenu: MenuColumn[] = [
   {
-    heading: "SHOES",
+    heading: "OBUWIE",
     links: [
-      { label: "Runners", href: "/collections/mens?type=runner" },
-      { label: "Walkers", href: "/collections/mens?type=walker" },
-      { label: "Trainers", href: "/collections/mens?type=trainer" },
-      { label: "Slip-Ons", href: "/collections/mens?type=slip-on" },
-      { label: "All Men's Shoes", href: "/collections/mens" },
+      { label: "Buty do biegania", href: "/collections/mens?type=runner" },
+      { label: "Buty do chodzenia", href: "/collections/mens?type=walker" },
+      { label: "Trampki", href: "/collections/mens?type=trainer" },
+      { label: "Wsuwane", href: "/collections/mens?type=slip-on" },
+      { label: "Wszystkie buty męskie", href: "/collections/mens" },
     ],
   },
   {
-    heading: "APPAREL",
+    heading: "ODZIEŻ",
     links: [
-      { label: "Tees", href: "/collections/apparel?gender=men&type=tee" },
-      { label: "Hoodies", href: "/collections/apparel?gender=men&type=hoodie" },
-      { label: "Joggers", href: "/collections/apparel?gender=men&type=pant" },
-      { label: "Jackets", href: "/collections/apparel?gender=men&type=jacket" },
-      { label: "All Men's Apparel", href: "/collections/apparel?gender=men" },
+      { label: "Koszulki", href: "/collections/apparel?gender=men&type=tee" },
+      { label: "Bluzy z kapturem", href: "/collections/apparel?gender=men&type=hoodie" },
+      { label: "Joggery", href: "/collections/apparel?gender=men&type=pant" },
+      { label: "Kurtki", href: "/collections/apparel?gender=men&type=jacket" },
+      { label: "Cała odzież męska", href: "/collections/apparel?gender=men" },
     ],
   },
   {
-    heading: "SOCKS",
+    heading: "SKARPETY",
     links: [
-      { label: "Ankle Socks", href: "/collections/socks?gender=men" },
-      { label: "Crew Socks", href: "/collections/socks?gender=men" },
-      { label: "No-Show", href: "/collections/socks" },
-      { label: "Performance", href: "/collections/socks" },
-      { label: "All Men's Socks", href: "/collections/socks" },
+      { label: "Stopki", href: "/collections/socks?gender=men" },
+      { label: "Klasyczne", href: "/collections/socks?gender=men" },
+      { label: "Niewidoczne", href: "/collections/socks" },
+      { label: "Sportowe", href: "/collections/socks" },
+      { label: "Wszystkie skarpety", href: "/collections/socks" },
     ],
   },
   {
-    heading: "ACCESSORIES",
+    heading: "AKCESORIA",
     links: [
-      { label: "Bags", href: "/collections/accessories" },
-      { label: "Beanies", href: "/collections/accessories" },
-      { label: "Caps", href: "/collections/accessories" },
-      { label: "Insoles", href: "/collections/accessories" },
+      { label: "Torby", href: "/collections/accessories" },
+      { label: "Czapki zimowe", href: "/collections/accessories" },
+      { label: "Czapki z daszkiem", href: "/collections/accessories" },
+      { label: "Wkładki", href: "/collections/accessories" },
     ],
   },
 ];
 
 const womenMenu: MenuColumn[] = [
   {
-    heading: "SHOES",
+    heading: "OBUWIE",
     links: [
-      { label: "Runners", href: "/collections/womens?type=runner" },
-      { label: "Walkers", href: "/collections/womens?type=walker" },
-      { label: "Trainers", href: "/collections/womens?type=trainer" },
-      { label: "Flats", href: "/collections/womens?type=flat" },
-      { label: "Slip-Ons", href: "/collections/womens?type=slip-on" },
-      { label: "All Women's Shoes", href: "/collections/womens" },
+      { label: "Buty do biegania", href: "/collections/womens?type=runner" },
+      { label: "Buty do chodzenia", href: "/collections/womens?type=walker" },
+      { label: "Trampki", href: "/collections/womens?type=trainer" },
+      { label: "Baleriny", href: "/collections/womens?type=flat" },
+      { label: "Wsuwane", href: "/collections/womens?type=slip-on" },
+      { label: "Wszystkie buty damskie", href: "/collections/womens" },
     ],
   },
   {
-    heading: "APPAREL",
+    heading: "ODZIEŻ",
     links: [
-      { label: "Tees", href: "/collections/apparel?gender=women&type=tee" },
-      { label: "Hoodies", href: "/collections/apparel?gender=women&type=hoodie" },
-      { label: "Joggers", href: "/collections/apparel?gender=women&type=pant" },
-      { label: "Cardigans", href: "/collections/apparel?gender=women&type=cardigan" },
-      { label: "All Women's Apparel", href: "/collections/apparel?gender=women" },
+      { label: "Koszulki", href: "/collections/apparel?gender=women&type=tee" },
+      { label: "Bluzy z kapturem", href: "/collections/apparel?gender=women&type=hoodie" },
+      { label: "Joggery", href: "/collections/apparel?gender=women&type=pant" },
+      { label: "Kardigany", href: "/collections/apparel?gender=women&type=cardigan" },
+      { label: "Cała odzież damska", href: "/collections/apparel?gender=women" },
     ],
   },
   {
-    heading: "SOCKS",
+    heading: "SKARPETY",
     links: [
-      { label: "Ankle Socks", href: "/collections/socks?gender=women" },
-      { label: "Crew Socks", href: "/collections/socks?gender=women" },
-      { label: "No-Show", href: "/collections/socks" },
-      { label: "Performance", href: "/collections/socks" },
-      { label: "All Women's Socks", href: "/collections/socks" },
+      { label: "Stopki", href: "/collections/socks?gender=women" },
+      { label: "Klasyczne", href: "/collections/socks?gender=women" },
+      { label: "Niewidoczne", href: "/collections/socks" },
+      { label: "Sportowe", href: "/collections/socks" },
+      { label: "Wszystkie skarpety", href: "/collections/socks" },
     ],
   },
   {
-    heading: "ACCESSORIES",
+    heading: "AKCESORIA",
     links: [
-      { label: "Bags", href: "/collections/accessories" },
-      { label: "Beanies", href: "/collections/accessories" },
-      { label: "Caps", href: "/collections/accessories" },
-      { label: "Insoles", href: "/collections/accessories" },
+      { label: "Torby", href: "/collections/accessories" },
+      { label: "Czapki zimowe", href: "/collections/accessories" },
+      { label: "Czapki z daszkiem", href: "/collections/accessories" },
+      { label: "Wkładki", href: "/collections/accessories" },
     ],
   },
 ];
@@ -100,6 +99,12 @@ const menuData: Record<MenuKey, MenuColumn[] | null> = {
   MEN: menMenu,
   WOMEN: womenMenu,
   SALE: null,
+};
+
+const displayLabels: Record<MenuKey, string> = {
+  MEN: "MĘŻCZYZNA",
+  WOMEN: "KOBIETA",
+  SALE: "WYPRZEDAŻ",
 };
 
 interface MegaMenuTriggerProps {
@@ -146,7 +151,7 @@ export function MegaMenuNav() {
               href={href}
               className="text-[12px] font-medium uppercase tracking-[0.5px] text-charcoal hover:opacity-60 transition-opacity"
             >
-              {label}
+              {displayLabels[label]}
             </Link>
           </div>
         ))}
@@ -154,7 +159,7 @@ export function MegaMenuNav() {
           href="/collections/new-arrivals"
           className="text-[12px] font-medium uppercase tracking-[0.5px] text-charcoal hover:opacity-60 transition-opacity"
         >
-          NEW
+          NOWOŚCI
         </Link>
       </div>
 
@@ -243,7 +248,7 @@ export function MobileMegaMenuContent({ onLinkClick }: { onLinkClick: () => void
               className="block text-nav py-2"
               onClick={onLinkClick}
             >
-              {label}
+              {displayLabels[label]}
             </Link>
           );
         }
@@ -255,7 +260,7 @@ export function MobileMegaMenuContent({ onLinkClick }: { onLinkClick: () => void
               onClick={() => setExpanded(isOpen ? null : label)}
               className="flex items-center justify-between w-full text-nav py-2"
             >
-              {label}
+              {displayLabels[label]}
               <span className="text-[12px] text-warm-gray">{isOpen ? "−" : "+"}</span>
             </button>
             {isOpen && (
@@ -290,7 +295,7 @@ export function MobileMegaMenuContent({ onLinkClick }: { onLinkClick: () => void
         className="block text-nav py-2"
         onClick={onLinkClick}
       >
-        NEW
+        NOWOŚCI
       </Link>
     </div>
   );

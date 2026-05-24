@@ -56,9 +56,9 @@ const materialOptions: { value: ShoeMaterial; label: string }[] = [
 ];
 
 const priceOptions: { value: PriceRange; label: string }[] = [
-  { value: "under-100", label: "Under 199 zl" },
-  { value: "100-130", label: "199 - 399 zl" },
-  { value: "over-130", label: "Over 399 zl" },
+  { value: "under-100", label: "Poniżej 199 zł" },
+  { value: "100-130", label: "199 – 399 zł" },
+  { value: "over-130", label: "Powyżej 399 zł" },
 ];
 
 function FilterSection({
@@ -174,26 +174,26 @@ export function FilterSidebar({
       {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-black/10">
         <h3 className="text-[12px] font-medium uppercase tracking-[0.5px]">
-          Filters
+          Filtry
         </h3>
         {activeFilterCount > 0 && (
           <button
             onClick={onClearAll}
             className="text-[11px] text-warm-gray underline hover:text-charcoal transition-colors"
           >
-            Clear all ({activeFilterCount})
+            Wyczyść ({activeFilterCount})
           </button>
         )}
       </div>
 
       {/* Gender */}
-      <FilterSection title="Gender">
+      <FilterSection title="Płeć">
         <div className="flex flex-col gap-0.5">
           {(["all", "men", "women"] as const).map((g) => (
             <Checkbox
               key={g}
               checked={gender === g}
-              label={g === "all" ? "All" : g === "men" ? "Men" : "Women"}
+              label={g === "all" ? "Wszystko" : g === "men" ? "Mężczyzna" : "Kobieta"}
               onChange={() => onGenderChange(g)}
             />
           ))}
@@ -201,7 +201,7 @@ export function FilterSidebar({
       </FilterSection>
 
       {/* Size */}
-      <FilterSection title="Size">
+      <FilterSection title="Rozmiar">
         <div className="grid grid-cols-4 gap-1.5">
           {allSizes.map((size) => (
             <button
@@ -221,7 +221,7 @@ export function FilterSidebar({
       </FilterSection>
 
       {/* Price Range */}
-      <FilterSection title="Price">
+      <FilterSection title="Cena">
         <div className="flex flex-col gap-0.5">
           {priceOptions.map((opt) => (
             <Checkbox
@@ -237,7 +237,7 @@ export function FilterSidebar({
       </FilterSection>
 
       {/* Shoe Type */}
-      <FilterSection title="Product Type">
+      <FilterSection title="Typ produktu">
         <div className="flex flex-col gap-0.5">
           {shoeTypeOptions.map((opt) => (
             <Checkbox
@@ -251,7 +251,7 @@ export function FilterSidebar({
       </FilterSection>
 
       {/* Material */}
-      <FilterSection title="Material">
+      <FilterSection title="Materiał">
         <div className="flex flex-col gap-0.5">
           {materialOptions.map((opt) => (
             <Checkbox
@@ -265,7 +265,7 @@ export function FilterSidebar({
       </FilterSection>
 
       {/* Seller */}
-      <FilterSection title="Seller">
+      <FilterSection title="Sprzedawca">
         <div className="flex flex-col gap-0.5">
           {allSellers.map((seller) => (
             <Checkbox

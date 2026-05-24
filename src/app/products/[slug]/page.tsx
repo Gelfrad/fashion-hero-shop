@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { products, getProduct, getRelatedProducts } from "@/data/products";
-import { getSimilarProductsBoostIds } from "@/data/campaigns";
 import { ImageGallery } from "@/components/image-gallery";
 import { ProductInfo } from "@/components/product-info";
 import { ProductDetailsAccordion } from "@/components/product-details-accordion";
@@ -38,14 +37,7 @@ export default async function ProductPage({ params }: PageProps) {
     notFound();
   }
 
-  const relatedBase = getRelatedProducts(product);
-  const boostIds = getSimilarProductsBoostIds(product.id);
-  const boostProducts = boostIds
-    .map((id) => products.find((p) => p.id === id))
-    .filter((p): p is NonNullable<typeof p> => !!p);
-  const seenIds = new Set(boostProducts.map((p) => p.id));
-  const organicRelated = relatedBase.filter((p) => !seenIds.has(p.id));
-  const related = [...boostProducts, ...organicRelated].slice(0, 8);
+  const related = getRelatedProducts(product);
 
   return (
     <main className="max-w-7xl mx-auto px-4 md:px-8 py-6 md:py-10">
@@ -65,8 +57,12 @@ export default async function ProductPage({ params }: PageProps) {
         <ProductDetailsAccordion product={product} />
       </div>
 
-      {/* Related products */}
-      <RelatedProducts products={related} />
+      {/* Related products — RelatedProducts injects active similar_products campaigns from the store */}
+      <RelatedProducts
+        products={related}
+        currentProductId={product.id}
+        allProducts={products}
+      />
 
       {/* Recently viewed */}
       <RecentlyViewedSection productId={product.id} />
